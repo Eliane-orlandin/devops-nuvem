@@ -1,11 +1,11 @@
 # VPC Principal
 resource "aws_vpc" "this" {
-  cidr_block           = var.vpc_cidr
+  cidr_block           = var.vpc.cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name = "dvn-devops-nuvem-vpc"
+    Name = var.vpc.name
   }
 }
 

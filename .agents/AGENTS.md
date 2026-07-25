@@ -232,14 +232,38 @@ Técnico, direto, sem floreios. Prioriza clareza, segurança e reprodutibilidade
 6. **Condicionais booleanas**: Em `count` e `for_each`, prefira expressões booleanas simples (ex: `count = var.create_public_subnets ? 1 : 0`).
 
 ## Nomeação de Variáveis (`variable`)
-1. **Sempre inclua `description`**: Toda variável deve ter `description` preenchida com clareza.
-2. **Ordem dos atributos na variável**:
+1. **Sem Hardcode de Strings**: NUNCA utilize strings ou valores em hardcode (como CIDRs, nomes estáticos, regiões) diretamente nos recursos (`.tf`). Sempre utilize variáveis declaradas.
+2. **Variáveis Contextualizadas e Estruturadas (`object`)**: Prefira criar variáveis de objeto ricas e contextualizadas por domínio ao invés de várias variáveis isoladas e fragmentadas.
+   - ❌ **Evite variáveis isoladas**: `vpc_cidr`, `public_subnet_1_cidr`, `private_subnet_1_cidr`
+   - ✅ **Prefira variáveis estruturadas (`object`)**: Uma variável `vpc` agrupando todo o contexto da VPC:
+     ```hcl
+     variable "vpc" {
+       type = object({
+         cidr_block = string
+         name       = string
+         public_subnets = list(object({
+           cidr_block        = string
+           availability_zone = string
+           name              = string
+         }))
+         private_subnets = list(object({
+           cidr_block        = string
+           availability_zone = string
+           name              = string
+         }))
+       })
+       description = "Configuração completa da VPC e suas subnets"
+     }
+     ```
+3. **Sempre inclua `description`**: Toda variável deve ter `description` preenchida com clareza.
+4. **Ordem dos atributos na variável**:
    - `description`
    - `type`
    - `default`
    - `validation`
-3. **Plural para coleções**: Use o nome no plural quando o tipo for `list(...)` ou `map(...)`.
-4. **Evite dupla negação**: Use nomes no positivo (ex: `encryption_enabled` em vez de `encryption_disabled`).
+5. **Plural para coleções**: Use o nome no plural quando o tipo for `list(...)` ou `map(...)`.
+6. **Evite dupla negação**: Use nomes no positivo (ex: `encryption_enabled` em vez de `encryption_disabled`).
+
 
 ## Nomeação de Outputs (`output`)
 1. **Estrutura de nome clara**: Formate nomes de outputs como `{name}_{type}_{attribute}`:

@@ -1,13 +1,13 @@
 # Subnets Privadas
 resource "aws_subnet" "private" {
-  count                   = length(var.private_subnets)
+  count                   = length(var.vpc.private_subnets)
   vpc_id                  = aws_vpc.this.id
-  cidr_block              = var.private_subnets[count.index].cidr_block
-  availability_zone       = var.private_subnets[count.index].availability_zone
+  cidr_block              = var.vpc.private_subnets[count.index].cidr_block
+  availability_zone       = var.vpc.private_subnets[count.index].availability_zone
   map_public_ip_on_launch = false
 
   tags = {
-    Name = var.private_subnets[count.index].name
+    Name = var.vpc.private_subnets[count.index].name
     Type = "Private"
   }
 }
@@ -50,7 +50,7 @@ resource "aws_route_table" "private" {
 
 # Associação das Subnets Privadas à Route Table Privada
 resource "aws_route_table_association" "private" {
-  count          = length(var.private_subnets)
+  count          = length(var.vpc.private_subnets)
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }

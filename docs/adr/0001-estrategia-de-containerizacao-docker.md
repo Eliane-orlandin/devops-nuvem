@@ -33,6 +33,7 @@ Adotar a containerização com **Docker**, utilizando uma estrutura padrão base
 - **Segurança**: Utilizar usuários não-root (`USER node` ou equivalente), fixar tags de imagens base (evitar `latest`), não incluir secrets ou credenciais no `Dockerfile`.
 - **Performance**: Otimizar cache de camadas colocando arquivos de dependências (`package.json`, `requirements.txt`) antes do código-fonte.
 - **Tamanho**: Minimizar o tamanho da imagem final usando multi-stage builds.
+- **Layout e Nomenclatura Terraform**: Respeitar a divisão modular por componentes (`providers.tf`, `vpc.tf`, `vpc.public-subnets.tf`, `vpc.private-subnets.tf`, `variables.tf`, `outputs.tf`) e utilizar `_` em identificadores conforme a regra de nomenclatura do projeto.
 
 ## Referências
 - [Docker Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
