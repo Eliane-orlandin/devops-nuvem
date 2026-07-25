@@ -49,3 +49,25 @@ variable "vpc" {
     ]
   }
 }
+
+variable "ec2" {
+  description = "Configuração estruturada das instâncias EC2 pública e privada"
+  type = object({
+    instance_type = string
+    public_instance = object({
+      name = string
+    })
+    private_instance = object({
+      name = string
+    })
+  })
+  default = {
+    instance_type = "t3.micro"
+    public_instance = {
+      name = "dvn-public-ec2"
+    }
+    private_instance = {
+      name = "dvn-private-ec2"
+    }
+  }
+}

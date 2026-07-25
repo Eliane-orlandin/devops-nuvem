@@ -17,3 +17,23 @@ output "nat_gateway_ip" {
   description = "IP Público (Elastic IP) do NAT Gateway"
   value       = aws_eip.nat.public_ip
 }
+
+output "public_instance_id" {
+  description = "ID da instância EC2 pública"
+  value       = aws_instance.public.id
+}
+
+output "public_instance_ip" {
+  description = "IP Público da instância EC2 pública"
+  value       = aws_instance.public.public_ip
+}
+
+output "private_instance_id" {
+  description = "ID da instância EC2 privada"
+  value       = aws_instance.private.id
+}
+
+output "private_instance_ip" {
+  description = "IP Privado da instância EC2 privada"
+  value       = aws_instance.private.private_ip
+}

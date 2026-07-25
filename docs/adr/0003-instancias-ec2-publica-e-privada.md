@@ -1,8 +1,8 @@
 # ADR 0003: Instâncias EC2 Pública (Bastion/Web) e Privada (Application)
 
 ## Status
-Proposto
-> Aprovação manual obrigatória por um humano antes da implementação.
+Aprovado
+> Aprovado pelo responsável humano.
 
 ## Contexto
 Após o provisionamento da topologia de rede na AWS (VPC `10.0.0.0/24` com subnets públicas e privadas), o ambiente precisa de capacidade computacional (servidores EC2) para hospedar os serviços da aplicação e permitir acesso seguro de administração.
@@ -58,3 +58,13 @@ Implementar duas instâncias EC2 utilizando Amazon Linux 2023 com segregação d
 ## Referências
 - [AWS EC2 Security Groups Best Practices](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html)
 - [Terraform aws_instance Resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
+
+## Log de implementação
+- **Data**: 2026-07-25
+- **Implementador**: Agente DevOps Engineer
+- **Artefatos Criados/Atualizados**:
+  - `terraform/variables.tf`: Adicionada variável de objeto estruturada `var.ec2`.
+  - `terraform/ec2.tf`: Criado arquivo com data source `aws_ami.amazon_linux_2023`, Security Groups (`aws_security_group.public_ec2`, `aws_security_group.private_ec2`) e instâncias EC2 (`aws_instance.public`, `aws_instance.private`).
+  - `terraform/outputs.tf`: Adicionados outputs `public_instance_id`, `public_instance_ip`, `private_instance_id` e `private_instance_ip`.
+- **Validação**: `terraform validate` executado com sucesso; `terraform plan` gerou o plano com 4 novos recursos a adicionar.
+
