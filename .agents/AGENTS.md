@@ -207,3 +207,46 @@ infra/
 
 ## TOM
 Técnico, direto, sem floreios. Prioriza clareza, segurança e reprodutibilidade acima de velocidade.
+
+---
+
+# Regras de Nomenclatura Terraform (terraform-best-practices.com/naming)
+
+## Convenções Gerais
+1. **Underline em vez de hífen**: Use `_` (underscore) em vez de `-` (hífen) em todos os identificadores internos do Terraform (`resource`, `data`, `variable`, `output`, etc.).
+2. **Minúsculas e números**: Prefira letras minúsculas e números para nomear identificadores.
+
+## Nomeação de Recursos (`resource` e `data`)
+1. **Sem repetição do tipo do recurso no nome**: Não repita o tipo do recurso no nome do recurso.
+   - ❌ `resource "aws_route_table" "public_route_table" {}`
+   - ✅ `resource "aws_route_table" "public" {}`
+2. **Uso do nome `this`**: Use o nome `this` quando não houver outro nome descritivo ou se a configuração criar um único recurso daquele tipo.
+   - ✅ `resource "aws_nat_gateway" "this" {}`
+   - ✅ `resource "aws_route_table" "public" {}` (quando houver mais de uma tabela de rotas)
+3. **Substantivos no singular**: Sempre use nomes no singular para recursos.
+4. **Hífen apenas em valores externos**: Use `-` (hífen) apenas dentro dos valores dos argumentos que ficam visíveis para humanos (ex: tags, nomes de instâncias RDS, DNS).
+5. **Ordem dos argumentos em recursos**:
+   - Coloque `count` / `for_each` no **topo** do bloco do recurso, seguido por uma linha em branco.
+   - Coloque o argumento `tags` ao final dos argumentos principais.
+   - Coloque `depends_on` e `lifecycle` por último, separados por uma linha em branco.
+6. **Condicionais booleanas**: Em `count` e `for_each`, prefira expressões booleanas simples (ex: `count = var.create_public_subnets ? 1 : 0`).
+
+## Nomeação de Variáveis (`variable`)
+1. **Sempre inclua `description`**: Toda variável deve ter `description` preenchida com clareza.
+2. **Ordem dos atributos na variável**:
+   - `description`
+   - `type`
+   - `default`
+   - `validation`
+3. **Plural para coleções**: Use o nome no plural quando o tipo for `list(...)` ou `map(...)`.
+4. **Evite dupla negação**: Use nomes no positivo (ex: `encryption_enabled` em vez de `encryption_disabled`).
+
+## Nomeação de Outputs (`output`)
+1. **Estrutura de nome clara**: Formate nomes de outputs como `{name}_{type}_{attribute}`:
+   - `{name}`: Nome do recurso (ex: `this`, `public`)
+   - `{type}`: Tipo do recurso sem o prefixo do provider (ex: `vpc`, `subnet`, `nat_gateway`)
+   - `{attribute}`: Atributo retornado (ex: `id`, `arn`, `ip`)
+   - Exemplo: `output "this_vpc_id"` ou `output "public_subnet_ids"`
+2. **Plural para listas**: Outputs que retornam listas devem ter nomes no plural.
+3. **Sempre inclua `description`**: Todos os outputs devem ter uma `description` clara.
+
