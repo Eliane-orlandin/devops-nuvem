@@ -250,3 +250,15 @@ Técnico, direto, sem floreios. Prioriza clareza, segurança e reprodutibilidade
 2. **Plural para listas**: Outputs que retornam listas devem ter nomes no plural.
 3. **Sempre inclua `description`**: Todos os outputs devem ter uma `description` clara.
 
+## Organização e Estrutura de Arquivos Terraform
+1. **Separação por Recurso/Funcionalidade**: Não concentre a infraestrutura em um único arquivo `main.tf`. Separe os recursos em arquivos `.tf` específicos por componente/domínio.
+2. **Padrão de Nomenclatura de Arquivos**: Use o nome do recurso principal seguido da especificidade daquele arquivo:
+   - `vpc.tf`: Recursos da VPC principal e Internet Gateway.
+   - `vpc.public-subnets.tf`: Subnets públicas, route tables públicas e associações.
+   - `vpc.private-subnets.tf`: Subnets privadas, NAT Gateway(s), route tables privadas e associações.
+   - `vpn.tf` (ou `vpn.<servico>.tf`): VPN Gateways, conexões e rotas de VPN.
+   - `providers.tf`: Configuração do bloco `terraform {}` e do provider `aws`.
+   - `variables.tf`: Declarações de variáveis.
+   - `outputs.tf`: Declarações de outputs.
+
+
