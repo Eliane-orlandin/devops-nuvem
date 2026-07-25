@@ -1,8 +1,8 @@
 # ADR 0004: Armazenamento Remoto do Terraform State (Remote Backend S3 e State Locking DynamoDB)
 
 ## Status
-Proposto
-> Aprovação manual obrigatória por um humano antes da implementação.
+Aprovado
+> Aprovado pelo responsável humano.
 
 ## Contexto
 Atualmente, o arquivo de estado do Terraform (`terraform.tfstate`) está sendo mantido localmente. Em um ambiente colaborativo e de produção, guardar o estado localmente traz riscos de perda de dados, conflitos de concorrência e falta de rastreabilidade de alterações na infraestrutura.
@@ -57,3 +57,15 @@ Implementar um **Remote Backend na AWS** composto por um **Bucket S3** com versi
 ## Referências
 - [Terraform Backend S3 Specification](https://developer.hashicorp.com/terraform/language/backend/s3)
 - [AWS S3 Bucket Versioning](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning)
+
+## Log de implementação
+- **Data**: 2026-07-25
+- **Implementador**: Agente DevOps Engineer
+- **Artefatos Criados**:
+  - `terraform/stacks/00-remote-backend-stack/providers.tf`
+  - `terraform/stacks/00-remote-backend-stack/variables.tf` (com `var.remote_backend` estruturado)
+  - `terraform/stacks/00-remote-backend-stack/s3.tf` (bucket com versionamento, criptografia AES256 e public access block)
+  - `terraform/stacks/00-remote-backend-stack/dynamodb.tf` (tabela `dvn-tfstate-locks` para state locking)
+  - `terraform/stacks/00-remote-backend-stack/outputs.tf`
+- **Validação**: `terraform init`, `terraform validate` e `terraform plan` executados na nova stack (5 recursos a adicionar).
+
